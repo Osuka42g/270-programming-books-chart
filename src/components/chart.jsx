@@ -1,25 +1,18 @@
-import { useState } from "react";
 import {
-  LineChart,
   XAxis,
   Tooltip,
   CartesianGrid,
-  Line,
-  ScatterChart,
   Legend,
-  Scatter,
   YAxis,
-  ZAxis,
   ComposedChart,
   Bar,
+  Cell,
 } from "recharts";
 
 export default (props) => {
 
   const { data = [] } = props;
-  const displayData = data.sort(function (a, b) {
-    return b.Rating - a.Rating;
-  });
+  const displayData = orderByRating(data);
 
   return (
     <ComposedChart width={1000} height={475} data={displayData}>
@@ -33,7 +26,13 @@ export default (props) => {
         barSize={15}
         fill="#413ea0"
         onMouseEnter={props.onMouseEnter}
-      />
+      >
+        {data.map((entry, i) => (
+          <Cell fill={entry.Color} key={entry.Color + entry.Title} />
+        ))}
+      </Bar>
     </ComposedChart>
   );
 };
+
+const orderByRating = data => data.sort((a, b) => b.Rating - a.Rating);
